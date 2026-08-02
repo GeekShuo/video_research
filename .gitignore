@@ -1,0 +1,22 @@
+# ===== 敏感凭据（切勿提交） =====
+.env
+cookies.txt
+yt_cookies.txt
+
+# ===== 大文件 / 缓存（本地保留，可重新生成） =====
+data/raw/
+data/chroma/
+data/images/
+data/visual/
+__pycache__/
+*.pyc
+*.log
+
+# ===== 第三方爬虫项目（独立 git 仓库，单独管理） =====
+MediaCrawler/
+
+# ===== 研究 Agent 中间产物 =====
+data/research/raw/
+
+# ===== 本地临时脚本 =====
+_*.py
