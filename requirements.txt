@@ -1,4 +1,7 @@
-yt-dlp>=2024.1.0
+yt-dlp>=2025.11.0
+# YouTube EJS/n-sig 挑战解算脚本，缺了会报 Requested format is not available
+# 还需系统装 Deno>=2.3 或 Node>=22（见 ytdlp_runtime.py）
+yt-dlp-ejs>=0.0.4
 faster-whisper>=1.0.0
 google-generativeai>=0.5.0
 openai>=1.30.0

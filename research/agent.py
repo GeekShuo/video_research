@@ -88,8 +88,34 @@ class ResearchAgent:
                             f"（可用 --urls 手动补充链接）")
         return results
 
+    def _enrich_titles(self, results: list[SearchResult]) -> list[SearchResult]:
+        """bili/youtube 的 flat 搜索只回 ID、不回标题，filter 前先补全真实标题，
+        否则 LLM 无法判相关性（会把全部判 0 分）。只补缺标题的，控制数量与频率。"""
+        import re
+        import time
+
+        def _needs(r: SearchResult) -> bool:
+            if r.platform not in NO_LOGIN:
+                return False
+            t = (r.title or "").strip()
+            return (not t) or bool(re.fullmatch(r"\d{5,}", t)) or t.startswith("av")
+
+        todo = [r for r in results if _needs(r)]
+        if not todo:
+            return results
+        cap = 40
+        log.info(f"[enrich] filter 前补全 {min(len(todo), cap)}/{len(todo)} 条标题 ...")
+        for r in todo[:cap]:
+            try:
+                ytdlp_search.enrich(r)
+            except Exception as e:
+                log.warning(f"[enrich] 失败: {str(e)[:60]}")
+            time.sleep(0.8)
+        return results
+
     def _filter(self, results: list[SearchResult]) -> list[SearchResult]:
         raw = flt.dedup(results)
+        raw = self._enrich_titles(raw)
         self._save("results_raw.json", [r.to_dict() for r in raw])
         log.info(f"[collect] 候选共 {len(raw)} 条（去重后）")
         kept = flt.rank(flt.llm_filter(self.topic, raw,

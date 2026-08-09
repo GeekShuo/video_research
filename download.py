@@ -3,6 +3,7 @@ import sys
 import yt_dlp
 
 from config import RAW_DIR
+from ytdlp_runtime import js_runtime_opts
 
 
 def download(url: str, out_dir: str = RAW_DIR, cookies: str | None = None) -> dict:
@@ -20,6 +21,8 @@ def download(url: str, out_dir: str = RAW_DIR, cookies: str | None = None) -> di
         "subtitleslangs": ["zh-Hans", "zh-CN", "en"],
         "quiet": False,
         "no_warnings": False,
+        # YouTube 的 EJS/n-sig 挑战必须靠外部 JS 运行时解算，否则只剩图片格式
+        **js_runtime_opts(),
     }
     if cookies:
         ydl_opts["cookiefile"] = cookies

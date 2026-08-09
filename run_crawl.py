@@ -180,16 +180,27 @@ def _dl_hook(d):
         sys.stdout.flush()
 
 
-def download_audio(url, cookies=None):
-    """只下载音频（转写用不到画面），更省带宽。返回 (vid, path, title)。"""
+def download_audio(url, cookies=None, cookiesfrombrowser=None):
+    """只下载音频（转写用不到画面），更省带宽。返回 (vid, path, title)。
+
+    cookiesfrombrowser: 浏览器名(如 "chrome"/"edge")，直接从已登录浏览器读
+    实时 cookie，绕过失效的 cookies.txt。注意该浏览器需先退出(否则锁库)。
+    """
     import yt_dlp
+
+    from ytdlp_runtime import js_runtime_opts
     ydl_opts = {
         "outtmpl": os.path.join(RAW_DIR, "%(id)s.%(ext)s"),
         "format": "bestaudio/best",
         "quiet": True, "no_warnings": True,
         "progress_hooks": [_dl_hook],
+        # YouTube 的 EJS/n-sig 挑战必须靠外部 JS 运行时解算，否则只剩图片格式
+        **js_runtime_opts(),
     }
-    if cookies and os.path.exists(cookies):
+    if cookiesfrombrowser:
+        # 优先用浏览器实时 cookie（PSIDTS 永远最新），绕过失效的 cookies.txt
+        ydl_opts["cookiesfrombrowser"] = (cookiesfrombrowser,)
+    elif cookies and os.path.exists(cookies):
         ydl_opts["cookiefile"] = cookies
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         info = ydl.extract_info(url, download=True)

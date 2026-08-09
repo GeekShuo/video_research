@@ -1,0 +1,12 @@
+﻿2026-08-03 01:08:45,726 候选视频 9 条，其中待补 9 条 (platform=youtube)
+2026-08-03 01:08:45,726    1. [ai模拟面试] 【求職人必看】準備面試不焦慮！AI模擬面試工具 Quick Mock X 104 | MIR | 0分0秒 | https://www.youtube.com/watch?v=ahOhsVN7a2Y
+2026-08-03 01:08:45,726    2. [ai模拟面试] 用Codex Vibecoding了一个Ai模拟面试神器，offer收到手软，主 | 阿水Ai说 | 0分0秒 | https://www.youtube.com/watch?v=ybW1T0lfWho
+2026-08-03 01:08:45,727    3. [ai模拟面试] Final Round AI vs Verve AI (2025) — Whic | Unfiltered Tech | 0分0秒 | https://www.youtube.com/watch?v=2JMMqkrLNkU
+2026-08-03 01:08:45,727    4. [ai模拟面试] How to ace your next AI job interview | Washington Post | 0分0秒 | https://www.youtube.com/watch?v=olFefP5ivDM
+2026-08-03 01:08:45,727    5. [ai模拟面试] AI Engineer Mock Interview | Real Techni | Think in Models | 0分0秒 | https://www.youtube.com/watch?v=7g71zKEzq_U
+2026-08-03 01:08:45,727    6. [ai模拟面试] 半小时收费100元！AI辅助面试到底有多离谱？它真的能帮助到求职者吗？【差评君】 | 差评君 | 0分0秒 | https://www.youtube.com/watch?v=RVtgOUV0yuo
+2026-08-03 01:08:45,727    7. [ai模拟面试] Elon Musk’s X.AI Interview Questions Gui | Career Circuit G | 0分0秒 | https://www.youtube.com/watch?v=KycEKfPSwxU
+2026-08-03 01:08:45,727    8. [ai模拟面试] ChatGPT扮演面试官，拿捏各种面试｜新功能｜面试｜各种岗位 | AI煉金術 | 0分0秒 | https://www.youtube.com/watch?v=9X3CTEWpH5Q
+2026-08-03 01:08:45,727    9. [ai模拟面试] 【面试攻略】大厂面试官手把手教你👆面试通过率 | 用AI面试 | Gaby-ShareNut | 0分0秒 | https://www.youtube.com/watch?v=gjnpLTbSoG8
+2026-08-03 01:08:45,727 合计时长 0小时0分
+2026-08-03 01:08:45,727 （这是清单预览，执行补爬请加 run）

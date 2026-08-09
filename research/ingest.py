@@ -89,8 +89,11 @@ def ingest_xhs(r: SearchResult, topic: str) -> int:
 
 
 def ingest_video_result(r: SearchResult, topic: str,
-                        idx: int = 1, total: int = 1) -> int:
-    """走完整视频链路（GPU 转写），失败降级图文。"""
+                        idx: int = 1, total: int = 1,
+                        cookiesfrombrowser: str | None = None,
+                        no_fallback: bool = False) -> int:
+    """走完整视频链路（GPU 转写），失败降级图文。
+    no_fallback=True 时下载失败直接跳过，不产生图文垃圾。"""
     from run_crawl import (COOKIES, _raw_exists, _to_wav, _transcribe_gpu,
                            _vid_from_url, download_audio)
 
@@ -110,11 +113,18 @@ def ingest_video_result(r: SearchResult, topic: str,
     else:
         log.info(f"[1/4] 下载音频 {vid} ...")
         try:
-            vid, raw, title = download_audio(r.url, cookies)
+            vid, raw, title = download_audio(
+                r.url, cookies, cookiesfrombrowser)
         except Exception as e:
+            if no_fallback:
+                log.error(f"[skip] 下载失败(不降级): {r.url} | {str(e)[:80]}")
+                return 0
             log.warning(f"[降级] 视频下载失败({str(e)[:80]})，改按图文入库: {r.url}")
             return ingest_text(r, topic, vid=vid)
         if not raw:
+            if no_fallback:
+                log.error(f"[skip] 下载失败(不降级): {r.url}")
+                return 0
             log.warning(f"[降级] 视频下载失败，改按图文入库: {r.url}")
             return ingest_text(r, topic, vid=vid)
         r.title = title or r.title
