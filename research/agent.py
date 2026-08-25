@@ -14,16 +14,27 @@ from llm import complete
 
 from . import filter as flt
 from . import planner
-from .collectors import media_crawler, ytdlp_search
+from .collectors import (
+    github_search,
+    media_crawler,
+    reddit_search,
+    twitter_search,
+    wechat_search,
+    ytdlp_search,
+)
 from .ingest import ingest_text, ingest_video_result
 from .models import SearchResult
 from .report import build_report, slugify
 
 log = logging.getLogger("research.agent")
 
-# 免登录平台（yt-dlp 搜索）
+# 免登录平台（yt-dlp / 公开 API / 公开网页）
 NO_LOGIN = {"bili": ytdlp_search.search_bili,
-            "youtube": ytdlp_search.search_youtube}
+            "youtube": ytdlp_search.search_youtube,
+            "github": github_search.search_repos,
+            "reddit": reddit_search.search_posts,
+            "twitter": twitter_search.search_tweets,
+            "wechat": wechat_search.search_articles}
 # 走 MediaCrawler 的平台（首次需扫码登录）
 MC_PLATFORMS = {"xhs", "dy", "zhihu", "wb"}
 

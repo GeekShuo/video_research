@@ -35,8 +35,8 @@ def main():
     ap = argparse.ArgumentParser(description="领域研究 Agent")
     ap.add_argument("topic", help="要研究的领域，如：具身智能 / AI 创业 / AI 编程")
     ap.add_argument("--platforms", default="bili,youtube",
-                    help="逗号分隔：bili,youtube,zhihu,xhs,dy,wb "
-                         "（bili/youtube 免登录；其余走 MediaCrawler，首次扫码）")
+                    help="逗号分隔：bili,youtube,github,reddit,twitter,wechat（免登录）；"
+                         "zhihu,xhs,dy,wb（走 MediaCrawler，首次扫码登录）")
     ap.add_argument("--max-per-kw", type=int, default=8,
                     help="每个关键词最多取多少条（默认 8）")
     ap.add_argument("--top", type=int, default=30,

@@ -26,11 +26,18 @@ MC_DIR = os.path.join(
 
 def _mc_python() -> str:
     """MediaCrawler 用独立 venv 跑（其依赖与转写环境的 onnxruntime/cublas 易冲突）。"""
-    venv_py = os.path.join(MC_DIR, "venv", "Scripts", "python.exe")
-    return venv_py if os.path.exists(venv_py) else sys.executable
+    for rel in (os.path.join("venv", "Scripts", "python.exe"),  # Windows
+                os.path.join("venv", "bin", "python")):        # macOS/Linux
+        venv_py = os.path.join(MC_DIR, rel)
+        if os.path.exists(venv_py):
+            return venv_py
+    return sys.executable
 
 # 各平台内容文件的 item_type（默认 contents，bili 为 videos）
 ITEM_TYPE = {"bili": "videos"}
+# MediaCrawler 数据目录名与平台代码不一致的映射
+DIR_NAME = {"dy": "douyin", "wb": "weibo", "bili": "bilibili",
+            "ks": "kuaishou", "xhs": "xhs", "zhihu": "zhihu", "tieba": "tieba"}
 SUPPORTED = ["xhs", "dy", "zhihu", "wb", "bili", "ks", "tieba"]
 
 
@@ -40,7 +47,9 @@ def is_available() -> bool:
 
 def login_state_exists(platform: str) -> bool:
     """该平台是否已有缓存的登录态（浏览器 user data 目录）。"""
-    for pat in (f"browser_data/{platform}_user_data_dir", f"{platform}_user_data_dir"):
+    for pat in (f"browser_data/{platform}_user_data_dir",
+                f"browser_data/cdp_{platform}_user_data_dir",
+                f"{platform}_user_data_dir"):
         if glob.glob(os.path.join(MC_DIR, pat)):
             return True
     return False
@@ -74,7 +83,8 @@ def crawl(platform: str, keywords: list[str], max_notes: int,
 
 def parse_output(platform: str, out_dir: str) -> list[SearchResult]:
     item_type = ITEM_TYPE.get(platform, "contents")
-    pattern = os.path.join(out_dir, platform, "json", f"search_{item_type}_*.json")
+    dir_name = DIR_NAME.get(platform, platform)
+    pattern = os.path.join(out_dir, dir_name, "json", f"search_{item_type}_*.json")
     files = sorted(glob.glob(pattern), key=os.path.getmtime)
     if not files:
         log.warning(f"[mc] 未找到输出文件: {pattern}")
