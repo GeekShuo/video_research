@@ -11,6 +11,8 @@ data/visual/
 __pycache__/
 *.pyc
 *.log
+*.out
+.DS_Store
 
 # ===== 第三方爬虫项目（独立 git 仓库，单独管理） =====
 MediaCrawler/
